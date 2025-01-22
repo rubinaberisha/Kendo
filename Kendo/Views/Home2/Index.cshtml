@@ -1,0 +1,337 @@
+﻿@using Kendo.Mvc.UI
+@model IEnumerable<Kendo.Models.EmployeeDirectoryModel>
+
+@{
+    ViewData["Title"] = "Grid";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@* Grid *@
+
+<p class="title">Products</p>
+@(Html.Kendo().Grid<Kendo.Models.ProductViewModel>()
+    .Name("grid")
+    .Columns(columns =>
+    {
+        columns.Bound(p => p.ProductName);
+        columns.Bound(p => p.UnitPrice).Width(120);
+        columns.Bound(p => p.UnitsInStock).Width(120);
+        columns.Bound(p => p.Discontinued).Width(120);
+        columns.Command(command => { command.Edit(); command.Destroy(); }).Width(250);
+    })
+    .ToolBar(toolbar => toolbar.Create())
+    .Editable(editable => editable.Mode(GridEditMode.InLine))
+    .Pageable()
+    .Sortable()
+    .Scrollable()
+    .HtmlAttributes(new { style = "height:500px;" })
+    .DataSource(dataSource => dataSource
+        .Ajax()
+        .PageSize(10)
+        .Model(model => model.Id(p => p.ProductID))
+        .Read(read => read.Action("Grid_Read", "Home2"))
+        .Create(update => update.Action("Grid_Create", "Home2"))
+        .Update(update => update.Action("Grid_Update", "Home2"))
+        .Destroy(update => update.Action("Grid_Destroy", "Home2"))
+    )
+)
+
+
+
+@* Calendar *@
+
+<div id="example">
+    <div class="demo-section" style="text-align: center;">
+        <h4>Pick a date</h4>
+        <div id="calendar"></div>
+    </div>
+    <script>
+        $(document).ready(function() {
+            $("#calendar").kendoCalendar();
+        });
+    </script>
+</div>
+
+
+@* @* Cards *@
+<div id="example">
+    <div class="cards-container">
+        <div class="k-card">
+            <div class="k-card-header">
+                <h5 class="k-card-title">Rome</h5>
+                <h6 class="k-card-subtitle">Capital of Italy</h6>
+            </div>
+            <img alt="Kendo UI for jQuery Card Colosseum in Rome" class="k-card-media" src="~/images/Rome.jpg" />
+            <div class="k-card-body">
+                <p>Rome is a sprawling, cosmopolitan city with nearly 3,000 years of globally influential art, architecture and culture on display.</p>
+                <p>Ancient ruins such as the Forum and the Colosseum evoke the power of the former Roman Empire. </p>
+            </div>
+            <div class="k-card-footer">
+                <a class="k-button k-button-flat-base k-button-flat k-button-md k-rounded-md k-icon-button"><span class="k-button-icon facebook"></span></a>
+                <a class="k-button k-button-flat-base k-button-flat k-button-md k-rounded-md k-icon-button"><span class="k-button-icon pinterest"></span></a>
+                <a class="k-button k-button-flat-base k-button-flat k-button-md k-rounded-md k-icon-button"><span class="k-button-icon twitter"></span></a>
+            </div>
+            <div class="k-actions k-card-actions k-actions-stretched">
+                <span class="k-card-action"><button class="k-button k-button-flat-primary k-button-flat k-button-md k-rounded-md">Map</button></span>
+                <span class="k-card-action"><button class="k-button k-button-flat-primary k-button-flat k-button-md k-rounded-md">Weather</button></span>
+            </div>
+        </div>
+
+        <div class="k-card">
+            <div class="k-card-header">
+                <h5 class="k-card-title">Barcelona</h5>
+                <h6 class="k-card-subtitle">Capital of Spain</h6>
+            </div>
+            <img alt="Kendo UI for jQuery Card Arc de Triomf" class="k-card-media" src="~/images/Barcelona.jpg" />
+            <div class="k-card-body">
+                <p>Barcelona, the cosmopolitan capital of Spain's Catalonia region, is known for its art and architecture.</p>
+                <p>The fantastical Sagrada Família church and other modernist landmarks designed by Antoni Gaudí dot the city.</p>
+            </div>
+            <div class="k-actions k-card-actions">
+                <button class="k-button k-button-flat-primary k-button-flat k-button-md k-rounded-md">Map</button>
+                <button class="k-button k-button-flat-primary k-button-flat k-button-md k-rounded-md">Weather</button>
+            </div>
+            <div class="k-card-footer">
+                <a class="k-button k-button-flat-base k-button-flat k-button-md k-rounded-md k-icon-button"><span class="k-button-icon facebook"></span></a>
+                <a class="k-button k-button-flat-base k-button-flat k-button-md k-rounded-md k-icon-button"><span class="k-button-icon pinterest"></span></a>
+                <a class="k-button k-button-flat-base k-button-flat k-button-md k-rounded-md k-icon-button"><span class="k-button-icon twitter"></span></a>
+            </div>
+        </div>
+
+        <div class="k-card">
+            <div class="k-card-header">
+                <h5 class="k-card-title">San Francisco</h5>
+                <h6 class="k-card-subtitle">City in California</h6>
+            </div>
+            <img alt="Kendo UI for jQuery Card Golden Gate Bridge and the strait" class="k-card-media" src="~/images/SanF.jpeg">
+            <div class="k-card-body">
+                <p>San Francisco, officially City and County of San Francisco and colloquially known as SF, San Fran or "The City", is the cultural, commercial, and financial center of Northern California.</p>
+            </div>
+            <div class="k-actions k-card-actions k-actions-stretched k-actions-vertical">
+                <span class="k-card-action"><button class="k-button k-button-flat-primary k-button-flat k-button-md k-rounded-md">Map</button></span>
+                <span class="k-card-action"><button class="k-button k-button-flat-primary k-button-flat k-button-md k-rounded-md">Weather</button></span>
+            </div>
+            <div class="k-card-footer">
+                <a class="k-button k-button-flat-base k-button-flat k-button-md k-rounded-md k-icon-button"><span class="k-button-icon facebook"></span></a>
+                <a class="k-button k-button-flat-base k-button-flat k-button-md k-rounded-md k-icon-button"><span class="k-button-icon pinterest"></span></a>
+                <a class="k-button k-button-flat-base k-button-flat k-button-md k-rounded-md k-icon-button"><span class="k-button-icon twitter"></span></a>
+            </div>
+        </div>
+    </div>
+    <style>
+        .cards-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .k-card {
+            width: 285px;
+            margin: 5%;
+        }
+
+        .k-card-footer {
+            text-align: center;
+        }
+
+        .k-card-action > .k-button {
+            width: 100%;
+        }
+    </style>
+    <script>
+        kendo.ui.icon($(".facebook"), { icon: 'facebook' });
+        kendo.ui.icon($(".pinterest"), { icon: 'pinterest' });
+        kendo.ui.icon($(".twitter"), { icon: 'twitter' });
+    </script>
+</div>
+@* <div id="treelist"></div> *@
+@* <script> *@
+
+@*             $(document).ready(function () { *@
+@*               $("#treelist").kendoTreeList({ *@
+@*             dataSource: { *@
+@*                 transport: { *@
+@*                     read: { *@
+@*                         url: "/Employee/GetAllEmployees", *@
+@*                         dataType: "json" *@
+@*                     }, *@
+@*                     create: { *@
+@*                         url: "/Employee/Create", *@
+@*                         dataType: "json", *@
+@*                         type: "POST" *@
+@*                     }, *@
+@*                     update: { *@
+@*                         url: "/Employee/Update", *@
+@*                         dataType: "json", *@
+@*                         type: "POST" *@
+@*                     }, *@
+@*                     destroy: { *@
+@*                         url: "/Employee/Delete", *@
+@*                         dataType: "json", *@
+@*                         type: "POST" *@
+@*                     } *@
+@*                 }, *@
+@*                 schema: { *@
+@*                     model: { *@
+@*                         id: "EmployeeID", *@
+@*                         parentId: "ReportsTo", *@
+@*                         fields: { *@
+@*                             EmployeeID: { type: "number", editable: false }, *@
+@*                             ReportsTo: { nullable: true }, *@
+@*                             FirstName: { type: "string" }, *@
+@*                             LastName: { type: "string" }, *@
+@*                             Position: { type: "string" }, *@
+@*                             Phone: { type: "string" }, *@
+@*                             Extension: { type: "number" }, *@
+@*                             Address: { type: "string" } *@
+@*                         } *@
+@*                     } *@
+@*                 } *@
+@*             }, *@
+@*             columns: [ *@
+@*                 { field: "FirstName", title: "First Name", width: 150 }, *@
+@*                 { field: "LastName", title: "Last Name", width: 150 }, *@
+@*                 { field: "ReportsTo", title: "repost", width: 150 }, *@
+@*                 { field: "Position", title: "Position", width: 200 }, *@
+@*                 { field: "Phone", title: "Phone", width: 150 }, *@
+@*                 { field: "Extension", title: "Extension", width: 100 }, *@
+@*                 { field: "Address", title: "Address", width: 250 }, *@
+@*                 { command: ["edit", "destroy"], title: "&nbsp;", width: 200 } *@
+@*             ], *@
+@*             toolbar: ["create"], // Add a Create button *@
+@*             editable: "inline" // Enable inline editing *@
+@*         }); *@
+
+@*         }); *@
+@*     </script> *@
+
+
+@*     @using Kendo.Mvc.UI *@
+
+@* @(Html.Kendo().TreeList<Kendo.Models.EmployeeDirectoryModel>() *@
+@*     .Name("treelist") *@
+@*     .Toolbar(toolbar => toolbar.Create()) *@
+@*     .Columns(columns => *@
+@*     { *@
+@*         columns.Add().Field(e => e.FirstName).Title("First Name").Width(220); *@
+@*         columns.Add().Field(e => e.LastName).Title("Last Name").Width(100); *@
+@*         columns.Add().Field(e => e.Position); *@
+@*         columns.Add().Field(e => e.HireDate).Format("{0:MMMM d, yyyy}"); *@
+@*         columns.Add().Field(e => e.Phone); *@
+@*         columns.Add().Field(e => e.Extension).Title("Ext").Format("{0:#}"); *@
+@*         columns.Add().Width(300).Command(c => *@
+@*         { *@
+@*             c.CreateChild().Text("Add child"); *@
+@*             c.Edit(); *@
+@*             c.Destroy(); *@
+@*         }); *@
+@*     }) *@
+@*     .Editable(e => e.Mode("inline")) *@
+@*     .DataSource(dataSource => dataSource *@
+@*         .Create(create => create.Action("Create", "EmployeeDirectory")) *@
+@*         .Read(read => read.Action("All", "EmployeeDirectory")) *@
+@*         .Update(update => update.Action("Update", "EmployeeDirectory")) *@
+@*         .Destroy(delete => delete.Action("Destroy", "EmployeeDirectory")) *@
+@*         .Model(m => *@
+@*         { *@
+@*             m.Id(f => f.EmployeeId); *@
+@*             m.ParentId(f => f.ReportsTo); *@
+@*             m.Expanded(true); *@
+@*         }) *@
+@*     ) *@
+@*     .Height(540) *@
+@* ) *@
+
+@* <style> *@
+@*     .k-treelist .k-command-cell .k-button { *@
+@*         min-width: 0px; *@
+@*         padding: 10px 10px 10px 10px; *@
+@*     } *@
+@* </style> *@
+
+
+@* TreeList *@
+
+@(Html.Kendo().TreeList<Kendo.Models.EmployeeDirectoryModel>()
+    .Name("treelist")
+    .Toolbar(toolbar => toolbar.Create())  
+    .Columns(columns =>
+    {
+
+        columns.Add().Field(e => e.FirstName).Title("First Name").Width(220);
+        columns.Add().Field(e => e.LastName).Title("Last Name").Width(100);
+        columns.Add().Field(e => e.Position).Title("Position");
+        columns.Add().Field(e => e.HireDate).Format("{0:MMMM d, yyyy}").Title("Hire Date");
+        columns.Add().Field(e => e.Phone).Title("Phone");
+        columns.Add().Field(e => e.Extension).Title("Ext").Format("{0:#}");
+        columns.Add().Width(300).Command(c =>
+        {
+            c.CreateChild().Text("Add Child");
+            c.Edit();
+            c.Destroy();
+        }).Title("Actions");
+    })
+    .Editable(treeListEditing => treeListEditing.Mode(TreeListEditMode.InLine))
+    .DataSource(dataSource => dataSource
+        .Create(create => create.Action("Create", "EmployeeDirectory"))
+        .Read(read => read.Action("All", "EmployeeDirectory"))
+        .Update(update => update.Action("Update", "EmployeeDirectory"))
+        .Destroy(delete => delete.Action("Destroy", "EmployeeDirectory"))
+        .Model(m =>
+        {
+            m.Id(f => f.EmployeeId);
+            m.ParentId(f => f.ReportsTo).Nullable(true);
+            m.Expanded(true);
+            m.Field(f => f.FirstName);  
+            m.Field(f => f.LastName);
+            m.Field(f => f.Position);
+            m.Field(f => f.HireDate);
+            m.Field(f => f.Phone);
+            m.Field(f => f.Extension);
+        })
+    )
+    .Height(540)
+)
+
+<style>
+    .k-treelist .k-command-cell .k-button {
+        min-width: 0px;
+        padding: 10px;
+        border-radius: 5px;
+    }
+
+       
+        .k-treelist .k-command-cell .k-button.k-grid-add {
+            background-color: #4CAF50; 
+            color: white;
+            display: block; 
+            width: 100%;
+            margin-bottom: 10px; 
+        }
+
+        
+        .k-treelist .k-command-cell .k-button.k-grid-edit {
+            background-color: #2196F3; 
+            color: white;
+            display: block; 
+            width: 48%; 
+            float: left; 
+            margin-right: 2%;
+        }
+
+        
+        .k-treelist .k-command-cell .k-button.k-grid-delete {
+            background-color: #f44336;
+            color: white;
+            display: block;
+            width: 48%; 
+            float: right; 
+        }
+
+    
+    .k-treelist .k-command-cell {
+        clear: both; 
+    }
+</style>
+
+
