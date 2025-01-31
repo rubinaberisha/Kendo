@@ -1,0 +1,52 @@
+﻿@model IEnumerable<News>
+@{
+    ViewData["Title"] = "Latest News";
+}
+
+<h2>Latest News</h2>
+<div class="cards-container">
+    @foreach (var news in Model)
+    {
+        <div class="k-card">
+            <div class="k-card-header">
+                <h5 class="k-card-title">@news.Title</h5>
+                <h6 class="k-card-subtitle">@news.Subtitle</h6>
+            </div>
+            <img class="k-card-media" src="@(!string.IsNullOrEmpty(news.ImagePath) ? news.ImagePath : Url.Content("~/images/placeholder.png"))" alt="@news.Title" style="object-fit: cover; height: 200px;" />
+            <div class="k-card-body">
+                <p>@(news.Content.Length > 100 ? news.Content.Substring(0, 100) + "..." : news.Content)</p>
+            </div>
+            <div class="k-card-footer">
+                <span>Published on: @news.PublishDate.ToString("yyyy-MM-dd")</span>
+                <a href="/News/Details/@news.Id" class="k-button k-primary">Read More</a>
+            </div>
+        </div>
+    }
+</div>
+
+<style>
+    .cards-container {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 20px;
+        padding: 20px;
+    }
+
+    .k-card {
+        width: 100%;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        margin: 0 auto;
+    }
+
+    .k-card-media {
+        width: 100%;
+        height: auto;
+    }
+
+    .k-card-footer {
+        text-align: center;
+        padding: 10px;
+        font-size: 0.9em;
+        color: #666;
+    }
+</style>

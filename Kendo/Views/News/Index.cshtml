@@ -1,0 +1,58 @@
+﻿@using Kendo.Mvc.UI
+
+@{
+    ViewData["Title"] = "News Admin";
+}
+
+<h2>Admin Panel - Manage News</h2>
+
+<script type="text/javascript">
+    function onSuccess(e) {
+        if (e.response) {
+            var filePath = e.response;
+            $("#ImagePath").val(filePath).trigger("change"); // Ensure field is updated
+        }
+    }
+</script>
+
+@(Html.Kendo().Grid<Kendo.Models.News>() // Replace with your actual model namespace
+    .Name("newsGrid")
+    .DataSource(dataSource => dataSource
+        .Ajax()
+        .Read(read => read.Action("GetNews", "News"))
+        .Create(create => create.Action("AddEditNews", "News"))
+        .Update(update => update.Action("UpdateNews", "News"))
+        .Destroy(destroy => destroy.Action("DeleteNews", "News"))
+        .Model(model =>
+        {
+            model.Id(m => m.Id);
+           
+        })
+    )
+    .ToolBar(toolbar => toolbar.Create())
+    //.Editable(editable => editable.Mode(GridEditMode.InLine)) // Use popup editing for better UI
+    .Editable(editable => editable.Mode(GridEditMode.PopUp).TemplateName("CreateUpdateNews"))
+    .Pageable()
+    .Columns(columns =>
+    {
+        columns.Bound(c => c.Title).Title("Title");
+        columns.Bound(c => c.Subtitle).Title("Subtitle");
+        columns.Bound(c => c.Content).Title("Content");
+        columns.Bound(c => c.ImagePath)
+        .Title("Foto")
+        .Width(200)
+        .ClientTemplate(
+        "# if (ImagePath) { #" +
+        "<img src='#=ImagePath#' style='height:50px;' alt='No Image Available' />" +
+        "# } else { #" +
+        "<img src='/ImageFiles/default.png' style='height:50px;' alt='Default Image' />" +
+        "# } #"
+        );
+        columns.Bound(c => c.PublishDate).Title("Publish Date").Format("{0:yyyy-MM-dd}");
+        columns.Command(command =>
+        {
+            command.Edit();
+            command.Destroy();
+        }).Title("Actions").Width(200);
+    })
+)

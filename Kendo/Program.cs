@@ -8,7 +8,7 @@ builder.Services.AddMvc().AddJsonOptions(options => { options.JsonSerializerOpti
 
 
 // Add services to the container.
-builder.Services.AddControllersWithViews();
+builder.Services.AddControllersWithViews().AddRazorRuntimeCompilation();
 builder.Services.AddKendo();
 
 builder.Services.AddControllersWithViews()

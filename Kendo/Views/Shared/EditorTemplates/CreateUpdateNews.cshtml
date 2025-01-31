@@ -1,0 +1,47 @@
+﻿@using Kendo.Mvc.UI
+@model Kendo.Models.News
+
+@{
+    Layout = null;
+}
+
+
+<div id="popup-editor">
+    <form id="popup-form" asp-action="AddEditNews">
+        @Html.HiddenFor(i => i.Id)
+        <div class="form-group">
+            <label for="Title">Title</label>
+            @(Html.Kendo().TextBoxFor(model => model.Title).HtmlAttributes(new { @class = "form-control" }))
+        </div>
+
+        <div class="form-group">
+            <label for="Content">Content</label>
+            @(Html.Kendo().EditorFor(model => model.Content).HtmlAttributes(new { style = "height:300px" }))
+        </div>
+
+        <div class="form-group">
+            <label for="PublishDate">Publish Date</label>
+            @(Html.Kendo().DateTimePickerFor(model => model.PublishDate).HtmlAttributes(new { @class = "form-control" }))
+        </div>
+
+        <div class="form-group">
+            <label for="Location">Subtitle</label>
+            @(Html.Kendo().TextBoxFor(model => model.Subtitle).HtmlAttributes(new { @class = "form-control" }))
+        </div>
+
+        <div class="form-group">
+            <label for="Images">Upload Images</label>
+            @(Html.Kendo().Upload()
+                .Name("file")
+                .Events(e => e.Success("onSuccess"))
+                .Async(a => a
+                    .Save("SaveFile", "News") // Ensure this matches your controller and action method
+                    .AutoUpload(true)
+                )
+                .HtmlAttributes(new { @class = "form-control", accept = ".jpg,.png,.webp,.jpeg,.pdf,.doc,.docx" })
+                )
+            @Html.HiddenFor(i => i.ImagePath)
+        </div>
+
+    </form>
+</div>

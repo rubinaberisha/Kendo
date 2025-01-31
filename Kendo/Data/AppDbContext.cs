@@ -10,14 +10,12 @@ namespace Kendo.Data
 
         }
 
-        //public AppDbContext() : base(new DbContextOptions<AppDbContext>())
-        //{
-        //}
 
         public DbSet<ProductViewModel>Products { get; set; }
         public DbSet<Employee> Employees { get; set; }
 
         public DbSet<EmployeeDirectoryModel> EmployeeDirectories { get; set; }
+        public DbSet<News> News { get; set; }
 
     }
 }

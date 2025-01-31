@@ -3,7 +3,7 @@
     public class Employee
     {
         public int EmployeeID { get; set; }
-        public int? ReportsTo { get; set; } // Nullable to allow root-level nodes
+        public int? ReportsTo { get; set; } 
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string Position { get; set; }

@@ -1,0 +1,54 @@
+﻿@using Kendo.Mvc.UI
+
+@{
+    ViewData["Title"] = "News Admin";
+}
+
+<h2>Admin Panel - Manage News</h2>
+
+@(Html.Kendo().Grid<Kendo.Models.News>() // Replace with your actual model namespace
+    .Name("newsGrid")
+    .DataSource(dataSource => dataSource
+        .Ajax()
+        .Read(read => read.Action("GetNews", "News"))
+        .Create(create => create.Action("AddEditNews", "News"))
+        .Update(update => update.Action("UpdateNews", "News"))
+        .Destroy(destroy => destroy.Action("DeleteNews", "News"))
+        .Model(model =>
+        {
+            model.Id(m => m.Id);
+            model.Field(m => m.Title).Editable(true);
+            model.Field(m => m.Subtitle).Editable(true);
+            model.Field(m => m.Content).Editable(true);
+            model.Field(m => m.ImagePath).Editable(true);
+            model.Field(m => m.PublishDate).Editable(true);
+        })
+    )
+    .ToolBar(toolbar => toolbar.Create())
+    .Editable(editable => editable.Mode(GridEditMode.InLine)) 
+    .Pageable()
+    .Columns(columns =>
+    {
+        columns.Bound(c => c.Title).Title("Title");
+        columns.Bound(c => c.Subtitle).Title("Subtitle");
+        columns.Bound(c => c.Content).Title("Content");
+        columns.Bound(c => c.ImagePath)
+            .Title("Image")
+            .ClientTemplate(
+                @"
+        # if (!string.IsNullOrEmpty(data.ImagePath)) { #
+            <img src='#= data.ImagePath #' alt='Image' style='max-width: 100px; max-height: 100px;' />
+        # } else { #
+            <span>No Image</span>
+        # } #
+        "
+            );
+
+        columns.Bound(c => c.PublishDate).Title("Publish Date").Format("{0:yyyy-MM-dd}");
+        columns.Command(command =>
+        {
+            command.Edit();
+            command.Destroy();
+        }).Title("Actions").Width(200);
+    })
+)
